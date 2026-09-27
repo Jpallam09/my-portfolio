@@ -13,6 +13,14 @@ const Marquee = ({
   const containerRef = useRef(null);
   const itemsRef = useRef([]);
 
+  // This whole function is copied from a GSAP example. It builds one long
+  // timeline that slides the text left forever, and when an item leaves on the
+  // left it instantly jumps back to the right end. The jump happens while it's
+  // off screen, so you never see it. That's what makes the loop seamless.
+  // You don't need to understand the maths to use it. Just call it with your
+  // items (see the useEffect below). The two options worth knowing:
+  //   speed: 1 = normal speed, 2 = twice as fast
+  //   paddingRight: the gap in pixels between the end and the start
   function horizontalLoop(items, config) {
     items = gsap.utils.toArray(items);
     config = config || {};
@@ -118,8 +126,10 @@ const Marquee = ({
   }
 
   useEffect(() => {
+    // Builds the loop that actually moves the text. reverse: true starts it
+    // travelling the other way (used by the bottom band on ContactSummary).
     const tl = horizontalLoop(itemsRef.current, {
-      repeat: -1,
+      repeat: -1, // -1 = loop forever
       paddingRight: 30,
       reversed: reverse,
     });

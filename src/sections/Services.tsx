@@ -11,6 +11,11 @@ const Services = () => {
   const serviceRefs = useRef([]);
   const isDesktop = useMediaQuery({ minWidth: "48rem" }); //768px
   useGSAP(() => {
+    // Every service card slides up on its own as it reaches the screen. Because
+    // each one has its own trigger, they animate separately instead of the whole
+    // list appearing at once.
+    // start: "top 80%" = begin when the card's top edge is 80% down the screen,
+    // so it's already slightly visible before it starts moving.
     serviceRefs.current.forEach((el) => {
       if (!el) return;
 

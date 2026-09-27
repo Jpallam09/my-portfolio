@@ -15,12 +15,20 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showBurger, setShowBurger] = useState(true);
   useGSAP(() => {
+    // Set the starting state before anything animates. The menu starts pushed
+    // fully off the right edge (xPercent: 100 = its own width), and the links
+    // are invisible and nudged left. Without this the menu would flash on
+    // screen before the animation ran.
     gsap.set(navRef.current, { xPercent: 100 });
     gsap.set([linksRef.current, contactRef.current], {
-      autoAlpha: 0,
+      autoAlpha: 0, // sets opacity AND visibility, so hidden links can't be tabbed to
       x: -20,
     });
 
+    // paused: true means this timeline sits still until we tell it to run.
+    // toggleMenu() then plays it to open and reverses it to close, which is why
+    // you can animate the same menu open and closed forever without any
+    // bookkeeping about its current state.
     tl.current = gsap
       .timeline({ paused: true })
       .to(navRef.current, {
@@ -50,6 +58,10 @@ const Navbar = () => {
         "<+0.2"
       );
 
+    // The two burger lines are just two bars in a column. Rotating them 45
+    // degrees each, in opposite directions, turns them into a cross.
+    // origin-center is what makes them spin around their own middle instead of
+    // a corner, so they stay put as they turn.
     iconTl.current = gsap
       .timeline({ paused: true })
       .to(topLineRef.current, {
