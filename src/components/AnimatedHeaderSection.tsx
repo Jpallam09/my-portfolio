@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { AnimatedTextLines } from "../components/AnimatedTextLines";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { gsap } from "../lib/gsap";
 
 type AnimatedHeaderSectionProps = {
   subTitle: string;

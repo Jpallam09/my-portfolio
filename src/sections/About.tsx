@@ -2,7 +2,7 @@ import { useRef } from "react";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import { AnimatedTextLines } from "../components/AnimatedTextLines";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { gsap } from "../lib/gsap";
 
 const About = () => {
   const text = `Passionate about clean architecture

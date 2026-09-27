@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import Marquee from "../components/Marquee";
 import { socials } from "../constants";
-import gsap from "gsap";
+import { gsap } from "../lib/gsap";
 
 const Contact = () => {
   const text = `Got a question, how or project Idea?

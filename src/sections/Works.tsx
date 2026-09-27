@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import { projects } from "../constants";
 import { useRef, useState } from "react";
-import gsap from "gsap";
+import { gsap } from "../lib/gsap";
 import { useGSAP } from "@gsap/react";
 
 const Works = () => {
