@@ -179,3 +179,22 @@ export const socials = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/ali-sanati/" },
   { name: "GitHub", href: "https://github.com/Ali-Sanati" },
 ];
+
+// Marquee word lists. These live here rather than inside the sections so the
+// array is the same object on every render. The Marquee component rebuilds its
+// animation whenever its items prop changes, and a list written inline in a
+// component (`const items = ["a", "b"]`) is a brand new array each time, which
+// means the animation would restart on every unrelated re-render.
+export const marqueeValues = [
+  "Innovation",
+  "Precision",
+  "Trust",
+  "Collaboration",
+  "Excellence",
+];
+
+// The repeating-item marquees are copied several times so the text has to be
+// wide enough to fill the screen at any size. One copy is never enough.
+export const marqueeRepeat = (text: string, count = 6) =>
+  Array.from({ length: count }, () => text);
+

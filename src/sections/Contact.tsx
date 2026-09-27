@@ -1,20 +1,15 @@
 import { useGSAP } from "@gsap/react";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import Marquee from "../components/Marquee";
-import { socials } from "../constants";
+import { marqueeRepeat, socials } from "../constants";
 import { gsap } from "../lib/gsap";
 
 const Contact = () => {
   const text = `Got a question, how or project Idea?
     WE’D love to hear from you and discus further!`;
-  const items = [
-    "just imagin, I code",
-    "just imagin, I code",
-    "just imagin, I code",
-    "just imagin, I code",
-    "just imagin, I code",
-  ];
   useGSAP(() => {
+    // The three contact blocks slide up one after another when they scroll in.
+    // delay: 0.5 = an extra half second pause before the first one starts.
     gsap.from(".social-link", {
       y: 100,
       opacity: 0,
@@ -76,7 +71,7 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      <Marquee items={items} className="text-white bg-transparent" />
+      <Marquee items={marqueeRepeat("just imagin, I code")} className="text-white bg-transparent" />
     </section>
   );
 };
