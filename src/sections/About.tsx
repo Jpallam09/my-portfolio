@@ -16,6 +16,12 @@ const About = () => {
 🎸 Strumming chords while CI pipelines pass (multitasking at its finest)`;
   const imgRef = useRef<HTMLImageElement | null>(null);
   useGSAP(() => {
+    // The whole section shrinks slightly as it goes past, which pulls the eye
+    // down the page. scrub ties it to your scroll position, so it reverses
+    // perfectly when you scroll back up.
+    // start/end are written as "when the element's <part> reaches <part> of the
+    // screen": start when the section's bottom hits 80% down the screen, end
+    // when that bottom reaches 20%. So the movement happens over that stretch.
     gsap.to("#about", {
       scale: 0.95,
       scrollTrigger: {
@@ -23,11 +29,14 @@ const About = () => {
         start: "bottom 80%",
         end: "bottom 20%",
         scrub: true,
-        markers: false,
+        markers: false, // set to true while developing to see the exact range
       },
       ease: "power1.inOut",
     });
 
+    // The photo is hidden by collapsing it to a flat line along its bottom
+    // edge, then un-collapsed when it scrolls in. Doing it with clip-path means
+    // the image itself is never resized, so nothing inside it shifts.
     gsap.set(imgRef.current, {
       clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)",
     });
@@ -50,7 +59,7 @@ const About = () => {
       <div className="flex flex-col items-center justify-between gap-16 px-10 pb-16 text-xl font-light tracking-wide lg:flex-row md:text-2xl lg:text-3xl text-white/60">
         <img
           ref={imgRef}
-          src="images/man.jpg"
+          src="/images/jp.png"
           alt="man"
           className="w-md rounded-3xl"
         />
