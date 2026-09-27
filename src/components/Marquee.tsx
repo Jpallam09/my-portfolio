@@ -124,7 +124,16 @@ const Marquee = ({
       reversed: reverse,
     });
 
-    Observer.create({
+    // This makes the marquee react to HOW FAST you scroll, not just where you
+    // are. Observer watches the scroll and tells us the speed, then we speed
+    // the loop up or slow it down: scroll the same way the text is moving and
+    // it speeds up, scroll the other way and it turns around.
+    // Two steps on purpose: speed up quickly, then 0.3s later ease back down
+    // to a gentle drift. Doing it in one go feels jerky.
+    // NOTE: Observer is a separate plugin, like ScrollTrigger, and it has to be
+    // registered before use (done in src/lib/gsap.ts). GSAP also does NOT clean
+    // it up for us when the component unmounts, so we kill it ourselves below.
+    const observer = Observer.create({
       onChangeY(self) {
         let factor = 2.5;
         if ((!reverse && self.deltaY < 0) || (reverse && self.deltaY > 0)) {
@@ -140,7 +149,11 @@ const Marquee = ({
           .to(tl, { timeScale: factor / 2.5, duration: 1 }, "+=0.3");
       },
     });
-    return () => tl.kill();
+
+    return () => {
+      observer.kill(); // without this, every remount leaves one behind
+      tl.kill();
+    };
   }, [items, reverse]);
   return (
     <div
