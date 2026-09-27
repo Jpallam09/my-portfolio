@@ -32,7 +32,7 @@ const ContactSummary = () => {
     // content so it has nothing to scroll. The page is probably falling back to
     // normal browser scrolling, which ScrollTrigger handles on its own. If you
     // ever make Lenis actually take over, this pin will be the first thing that
-    // drifts - see GSAP-PATTERNS.md for the three lines that connect them.
+    // drifts - see doc/GSAP-PATTERNS.md for the three lines that connect them.
     gsap.to(containerRef.current, {
       scrollTrigger: {
         trigger: containerRef.current,
