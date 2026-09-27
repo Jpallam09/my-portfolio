@@ -1,13 +1,14 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import { projects } from "../constants";
-import { useRef, useState } from "react";
+import { useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { gsap } from "../lib/gsap";
 import { useGSAP } from "@gsap/react";
 
 const Works = () => {
   const overlayRefs = useRef<Array<HTMLElement | null>>([]);
   const previewRef = useRef<HTMLDivElement | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
 
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const text = `Featured projects that have been meticulously
@@ -19,6 +20,13 @@ const Works = () => {
   const moveY = useRef<((value: number) => void) | null>(null);
 
   useGSAP(() => {
+    // Mouse move fires roughly 60 times a second, so don't call gsap.to() each
+    // time - that creates a brand new tween every event and the page janks.
+    // gsap.quickTo() hands you a function you can call as often as you like;
+    // it reuses a single animation and just retargets it.
+    // x catches up in 1.5s, y takes 2s. The mismatch is on purpose: the image
+    // trails the mouse more on one axis, which reads as "it has weight".
+    // Same duration on both axes looks robotic and lifeless.
     moveX.current = gsap.quickTo(previewRef.current, "x", {
       duration: 1.5,
       ease: "power3.out",
@@ -28,7 +36,8 @@ const Works = () => {
       ease: "power3.out",
     });
 
-    gsap.from("#project", {
+    // The rows fade in one after another as the list comes into view.
+    gsap.from(".project-row", {
       y: 100,
       opacity: 0,
       delay: 0.5,
@@ -36,7 +45,7 @@ const Works = () => {
       stagger: 0.3,
       ease: "back.out",
       scrollTrigger: {
-        trigger: "#project",
+        trigger: listRef.current, // the whole list, not one row
       },
     });
   }, []);
@@ -48,7 +57,19 @@ const Works = () => {
     const el = overlayRefs.current[index];
     if (!el) return;
 
+    // Pointer events fire much faster than a 0.15s tween can finish, so moving
+    // in and out quickly leaves two animations fighting over the same property
+    // and the overlay ends up stuck half-open. killTweensOf() clears whatever
+    // was still running before we start a new one.
     gsap.killTweensOf(el);
+    // fromTo instead of from, because the overlay may already be partway open
+    // from a previous hover - from would snap it shut first (visible flicker),
+    // fromTo always starts from exactly these values.
+    // clip-path polygon points go around the shape: top-left, top-right,
+    // bottom-right, bottom-left. Both bottom corners at "100% 100%" collapses
+    // the shape into a flat line along the bottom edge, so raising them to "0%"
+    // looks like a curtain being pulled up over the row. Animating clip-path
+    // instead of height means the row's contents never move or reflow.
     gsap.fromTo(
       el,
       {
@@ -91,8 +112,11 @@ const Works = () => {
     });
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  // React hands you a SyntheticEvent here, not a plain DOM MouseEvent. Both
+  // have clientX/clientY, which is all this needs.
+  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
     if (window.innerWidth < 768) return;
+    // +24 nudges the preview off the cursor so it doesn't sit under it.
     mouse.current.x = e.clientX + 24;
     mouse.current.y = e.clientY + 24;
     moveX.current(mouse.current.x);
@@ -109,14 +133,14 @@ const Works = () => {
         withScrollTrigger={true}
       />
       <div
+        ref={listRef}
         className="relative flex flex-col font-light"
         onMouseMove={handleMouseMove}
       >
         {projects.map((project, index) => (
           <div
             key={project.id}
-            id="project"
-            className="relative flex flex-col gap-1 py-5 cursor-pointer group md:gap-0"
+            className="project-row relative flex flex-col gap-1 py-5 cursor-pointer group md:gap-0"
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={() => handleMouseLeave(index)}
           >
