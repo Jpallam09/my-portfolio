@@ -53,10 +53,10 @@ const ContactSummary = () => {
       <Marquee items={marqueeValues} />
       <div className="overflow-hidden font-light text-center contact-text-responsive">
         <p>
-          “ Let’s build a <br />
-          <span className="font-normal">memorable</span> &{" "}
-          <span className="italic">inspiring</span> <br />
-          web application <span className="text-gold">together</span> “
+          “ Let’s build <br />
+          <span className="font-normal">clean</span> &{" "}
+          <span className="italic">scalable</span> <br />
+          software solutions <span className="text-gold">together</span> “
         </p>
       </div>
       <Marquee

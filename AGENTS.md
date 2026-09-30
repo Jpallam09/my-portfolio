@@ -50,5 +50,5 @@ Single-page GSAP-driven portfolio site (React 19 + TS + Vite 6 + Tailwind v4). N
 ## Known pre-existing issues (leave alone unless asked)
 
 - `About.tsx` uses `src="images/man.jpg"` (relative) instead of `/images/man.jpg`; works only at the site root.
-- Placeholder contact data is still live in `Navbar` and `Contact` (`JohnDoe@gmail.com`, `+33 7 12 12 32 12`), and every `projects[].href` is `""`.
+- Placeholder contact data is still live in `Navbar` and `Contact` (`allamjohnpaul0901@gmail.com`, `+33 7 12 12 32 12`), and every `projects[].href` is `""`.
 - `Works.tsx` hover effects are hard-guarded by `window.innerWidth < 768` checks, independent of Tailwind's `md:` breakpoint; its `handleMouseMove` is typed `(e: MouseEvent)` but is bound to a React `onMouseMove` and receives a SyntheticEvent.

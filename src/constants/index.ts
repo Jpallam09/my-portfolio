@@ -26,7 +26,7 @@ export const servicesData = [
       "Everything depends on the data layer. I work on schema design, query performance, and caching to keep things fast and consistent.",
     items: [
       { title: "MySQL, PostgreSQL" },
-      { title: "MongoDB, Redis" },
+      { title: "MongoDB" },
       { title: "Redis" },
     ],
   },
@@ -135,13 +135,8 @@ export const projects = [
   },
 ];
 export const socials = [
-  { name: "Instagram", href: "https://www.instagram.com/ali.sanatidev/reels/" },
-  {
-    name: "Youtube",
-    href: "https://www.youtube.com/channel/UCZhtUWTtk3bGJiMPN9T4HWA",
-  },
-  { name: "LinkedIn", href: "https://www.linkedin.com/in/ali-sanati/" },
-  { name: "GitHub", href: "https://github.com/Ali-Sanati" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/johnpaulallam/" },
+  { name: "GitHub", href: "https://github.com/jpallam09" },
 ];
 
 // Marquee word lists. These live here rather than inside the sections so the
@@ -150,11 +145,11 @@ export const socials = [
 // component (`const items = ["a", "b"]`) is a brand new array each time, which
 // means the animation would restart on every unrelated re-render.
 export const marqueeValues = [
-  "Innovation",
-  "Precision",
-  "Trust",
-  "Collaboration",
-  "Excellence",
+  "Scalability",
+  "Performance",
+  "Clean Code",
+  "Reliability",
+  "Usability",
 ];
 
 // The repeating-item marquees are copied several times so the text has to be
