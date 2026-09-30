@@ -5,15 +5,17 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "../lib/gsap";
 
 const About = () => {
-  const text = `Passionate about clean architecture
-    I build scalable, high-performance solutions
-    from prototype to production`;
-  const aboutText = `Obsessed with building fast, intuitive apps—from pixel-perfect React UIs to bulletproof serverless backends. Every line of code is a promise: quality that users feel.
-  When I’m not shipping:
-⚡️ Open-sourcing my latest experiment (or hacking on yours)
-🎥 Teaching devs on Twitch/YouTube—because rising tides lift all ships
-🧗 Rock climbing (problem-solving with real stakes)
-🎸 Strumming chords while CI pipelines pass (multitasking at its finest)`;
+const text = `Driven Software Developer
+    Building scalable solutions from concept to production`;
+
+  const aboutText = `Focused on building fast, intuitive applications and
+  turning complex workflows into simple, reliable software.
+  Grounded in clean architecture, performance,
+  and practical problem-solving.
+  When I'm not coding:
+• Designing clean systems and optimizing performance
+• Exploring software patterns and developer tooling
+• Solving complex technical challenges`;
   const imgRef = useRef<HTMLImageElement | null>(null);
   useGSAP(() => {
     // The whole section shrinks slightly as it goes past, which pulls the eye
