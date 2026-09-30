@@ -42,30 +42,36 @@ const ServiceSummary = () => {
     });
   });
 
-  return (
-    <section className="mt-20 overflow-hidden font-light leading-snug text-center mb-42 contact-text-responsive">
+    return (
+    <section className="mt-20 overflow-hidden font-light leading-snug text-center mb-42
+    contact-text-responsive max-lg:text-[6.3vw]!">
       <div id="title-service-1">
-        <p>Architucture</p>
+        <p>Architecture</p>
       </div>
       <div
         id="title-service-2"
-        className="flex items-center justify-center gap-3 translate-x-16"
+        className="flex items-center justify-center gap-[0.3em] whitespace-nowrap
+        translate-x-[1.5vw] lg:gap-3 lg:translate-x-16"
       >
         <p className="font-normal">Development</p>
-        <div className="w-10 h-1 md:w-32 bg-gold" />
+        <div className="h-1 w-[1em] shrink-0 bg-gold lg:w-32" />
         <p>Deployment</p>
       </div>
       <div
         id="title-service-3"
-        className="flex items-center justify-center gap-3 -translate-x-48"
+        className="flex items-center justify-center gap-[0.3em] whitespace-nowrap
+        translate-x-[-3vw] lg:gap-3 lg:-translate-x-48"
       >
-        <p>APIs</p>
-        <div className="w-10 h-1 md:w-32 bg-gold" />
+        <p>API</p>
+        <div className="h-1 w-[1em] shrink-0 bg-gold lg:w-32" />
         <p className="italic">Frontends</p>
-        <div className="w-10 h-1 md:w-32 bg-gold" />
+        <div className="h-1 w-[1em] shrink-0 bg-gold lg:w-32" />
         <p>Scalability</p>
       </div>
-      <div id="title-service-4" className="translate-x-48">
+      <div
+        id="title-service-4"
+        className="translate-x-[3vw] lg:translate-x-48"
+      >
         <p>Databases</p>
       </div>
     </section>
