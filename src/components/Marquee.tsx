@@ -1,7 +1,34 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 import { gsap } from "../lib/gsap";
 import { Observer } from "gsap/all";
 import { useEffect, useRef } from "react";
+
+interface MarqueeProps {
+  items: string[];
+  className?: string;
+  icon?: string;
+  iconClassName?: string;
+  reverse?: boolean;
+}
+
+// Options accepted by horizontalLoop below.
+interface LoopConfig {
+  repeat?: number;
+  paused?: boolean;
+  speed?: number;
+  snap?: number | false;
+  paddingRight?: number | string;
+  reversed?: boolean;
+}
+
+// A normal GSAP timeline plus the extra helpers horizontalLoop attaches to it.
+type LoopTimeline = gsap.core.Timeline & {
+  next: (vars?: gsap.TweenVars) => gsap.core.Tween;
+  previous: (vars?: gsap.TweenVars) => gsap.core.Tween;
+  current: () => number;
+  toIndex: (index: number, vars?: gsap.TweenVars) => gsap.core.Tween;
+  times: number[];
+};
 
 const Marquee = ({
   items,
@@ -9,9 +36,9 @@ const Marquee = ({
   icon = "mdi:star-four-points",
   iconClassName = "",
   reverse = false,
-}) => {
-  const containerRef = useRef(null);
-  const itemsRef = useRef([]);
+}: MarqueeProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const itemsRef = useRef<(HTMLSpanElement | null)[]>([]);
 
   // This whole function is copied from a GSAP example. It builds one long
   // timeline that slides the text left forever, and when an item leaves on the
@@ -21,38 +48,43 @@ const Marquee = ({
   // items (see the useEffect below). The two options worth knowing:
   //   speed: 1 = normal speed, 2 = twice as fast
   //   paddingRight: the gap in pixels between the end and the start
-  function horizontalLoop(items, config) {
-    items = gsap.utils.toArray(items);
-    config = config || {};
-    let tl = gsap.timeline({
-        repeat: config.repeat,
-        paused: config.paused,
-        defaults: { ease: "none" },
-        onReverseComplete: () =>
-          tl.totalTime(tl.rawTime() + tl.duration() * 100),
-      }),
-      length = items.length,
-      startX = items[0].offsetLeft,
-      times = [],
-      widths = [],
-      xPercents = [],
-      curIndex = 0,
-      pixelsPerSecond = (config.speed || 1) * 100,
-      snap =
-        config.snap === false ? (v) => v : gsap.utils.snap(config.snap || 1), // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
-      totalWidth,
-      curX,
-      distanceToStart,
-      distanceToLoop,
-      item,
-      i;
+  function horizontalLoop(
+    itemsInput: (HTMLElement | null)[],
+    config: LoopConfig = {},
+  ): LoopTimeline {
+    const items = gsap.utils.toArray<HTMLElement>(itemsInput);
+    const tl = gsap.timeline({
+      repeat: config.repeat,
+      paused: config.paused,
+      defaults: { ease: "none" },
+      onReverseComplete: () => tl.totalTime(tl.rawTime() + tl.duration() * 100),
+    }) as LoopTimeline;
+    const length = items.length;
+    const startX = items[0].offsetLeft;
+    const times: number[] = [];
+    const widths: number[] = [];
+    const xPercents: number[] = [];
+    let curIndex = 0;
+    const pixelsPerSecond = (config.speed || 1) * 100;
+    const snap: (v: number) => number =
+      config.snap === false
+        ? (v: number) => v
+        : gsap.utils.snap(config.snap || 1); // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
+    let totalWidth: number;
+    let curX: number;
+    let distanceToStart: number;
+    let distanceToLoop: number;
+    let item: HTMLElement;
+    let i: number;
     gsap.set(items, {
       // convert "x" to "xPercent" to make things responsive, and populate the widths/xPercents Arrays to make lookups faster.
-      xPercent: (i, el) => {
-        let w = (widths[i] = parseFloat(gsap.getProperty(el, "width", "px")));
+      xPercent: (i: number, el: Element) => {
+        const w = (widths[i] = parseFloat(
+          String(gsap.getProperty(el, "width", "px")),
+        ));
         xPercents[i] = snap(
-          (parseFloat(gsap.getProperty(el, "x", "px")) / w) * 100 +
-            gsap.getProperty(el, "xPercent")
+          (parseFloat(String(gsap.getProperty(el, "x", "px"))) / w) * 100 +
+            Number(gsap.getProperty(el, "xPercent")),
         );
         return xPercents[i];
       },
@@ -63,27 +95,27 @@ const Marquee = ({
       (xPercents[length - 1] / 100) * widths[length - 1] -
       startX +
       items[length - 1].offsetWidth *
-        gsap.getProperty(items[length - 1], "scaleX") +
-      (parseFloat(config.paddingRight) || 0);
+        Number(gsap.getProperty(items[length - 1], "scaleX")) +
+      (parseFloat(String(config.paddingRight)) || 0);
     for (i = 0; i < length; i++) {
       item = items[i];
       curX = (xPercents[i] / 100) * widths[i];
       distanceToStart = item.offsetLeft + curX - startX;
       distanceToLoop =
-        distanceToStart + widths[i] * gsap.getProperty(item, "scaleX");
+        distanceToStart + widths[i] * Number(gsap.getProperty(item, "scaleX"));
       tl.to(
         item,
         {
           xPercent: snap(((curX - distanceToLoop) / widths[i]) * 100),
           duration: distanceToLoop / pixelsPerSecond,
         },
-        0
+        0,
       )
         .fromTo(
           item,
           {
             xPercent: snap(
-              ((curX - distanceToLoop + totalWidth) / widths[i]) * 100
+              ((curX - distanceToLoop + totalWidth) / widths[i]) * 100,
             ),
           },
           {
@@ -92,17 +124,16 @@ const Marquee = ({
               (curX - distanceToLoop + totalWidth - curX) / pixelsPerSecond,
             immediateRender: false,
           },
-          distanceToLoop / pixelsPerSecond
+          distanceToLoop / pixelsPerSecond,
         )
         .add("label" + i, distanceToStart / pixelsPerSecond);
       times[i] = distanceToStart / pixelsPerSecond;
     }
-    function toIndex(index, vars) {
-      vars = vars || {};
+    function toIndex(index: number, vars: gsap.TweenVars = {}) {
       Math.abs(index - curIndex) > length / 2 &&
         (index += index > curIndex ? -length : length); // always go in the shortest direction
-      let newIndex = gsap.utils.wrap(0, length, index),
-        time = times[newIndex];
+      const newIndex = gsap.utils.wrap(0, length, index);
+      let time = times[newIndex];
       if (time > tl.time() !== index > curIndex) {
         // if we're wrapping the timeline's playhead, make the proper adjustments
         vars.modifiers = { time: gsap.utils.wrap(0, tl.duration()) };
@@ -119,7 +150,7 @@ const Marquee = ({
     tl.times = times;
     tl.progress(1, true).progress(0, true); // pre-render for performance
     if (config.reversed) {
-      tl.vars.onReverseComplete();
+      tl.vars.onReverseComplete?.();
       tl.reverse();
     }
     return tl;
@@ -168,13 +199,15 @@ const Marquee = ({
   return (
     <div
       ref={containerRef}
-      className={`overflow-hidden w-full h-20 md:h-[100px] flex items-center marquee-text-responsive font-light uppercase whitespace-nowrap ${className}`}
+      className={`overflow-hidden w-full h-20 md:h-25 flex items-center marquee-text-responsive font-light uppercase whitespace-nowrap ${className}`}
     >
       <div className="flex">
         {items.map((text, index) => (
           <span
             key={index}
-            ref={(el) => (itemsRef.current[index] = el)}
+            ref={(el) => {
+              itemsRef.current[index] = el;
+            }}
             className="flex items-center px-16 gap-x-32"
           >
             {text} <Icon icon={icon} className={iconClassName} />
