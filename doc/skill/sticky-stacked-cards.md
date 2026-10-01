@@ -4,7 +4,7 @@
 
 **Use when** — "stacked cards", "cards pile up on scroll", "sticky cards", "cards stack", "overlapping cards on scroll", "stacking list".
 
-Extracted from the `src/sections/Services.tsx` sticky service-card pattern.
+Extracted from the `src/sections/Skills.tsx` sticky skill-card pattern.
 
 ---
 
@@ -26,13 +26,13 @@ import { useMediaQuery } from "react-responsive";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "../lib/gsap";
 
-const services = [
-  { title: "Service One", description: "…", items: ["…", "…"] },
-  { title: "Service Two", description: "…", items: ["…", "…"] },
-  { title: "Service Three", description: "…", items: ["…", "…"] },
+const skills = [
+  { title: "Skill One", description: "…", items: ["…", "…"] },
+  { title: "Skill Two", description: "…", items: ["…", "…"] },
+  { title: "Skill Three", description: "…", items: ["…", "…"] },
 ];
 
-const Services = () => {
+const Skills = () => {
   const cardRefs = useRef<Array<HTMLElement | null>>([]);
   const isDesktop = useMediaQuery({ minWidth: "48rem" });
 
@@ -57,7 +57,7 @@ const Services = () => {
 
   return (
     <section className="min-h-screen">
-      {services.map((service, index) => (
+      {skills.map((skill, index) => (
         <div
           // Block body, not an expression: React's Ref callback type requires
           // `void | (() => void)`, and returning the assignment's value fails
@@ -79,20 +79,20 @@ const Services = () => {
                   // fewer cards after it, so less gap is needed. Without this,
                   // the last card would be pushed off the bottom by gaps that
                   // were sized for cards that follow it.
-                  marginBottom: `${(services.length - index - 1) * 5}rem`,
+                  marginBottom: `${(skills.length - index - 1) * 5}rem`,
                 }
               : { top: 0 }
           }
         >
-          <h2>{service.title}</h2>
-          <p>{service.description}</p>
+          <h2>{skill.title}</h2>
+          <p>{skill.description}</p>
         </div>
       ))}
     </section>
   );
 };
 
-export default Services;
+export default Skills;
 ```
 
 ## 4. Wire it up

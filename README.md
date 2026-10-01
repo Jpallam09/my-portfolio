@@ -31,9 +31,9 @@ Each of these is implemented in `src/`, not described aspirationally:
 | Full-screen menu | `sections/Navbar.tsx` | `paused: true` timeline, played to open and reversed to close |
 | Burger to cross | `sections/Navbar.tsx` | Two bars rotated `±45deg` around `origin-center` |
 | Hide chrome on scroll down | `sections/Navbar.tsx` | `window` scroll listener comparing against `lastScrollY` |
-| Page-wide horizontal drift | `sections/ServiceSummary.tsx` | Four rows scrubbed sideways by `xPercent`, with no `trigger` |
-| Stacked sticky cards | `sections/Services.tsx` | CSS `position: sticky` with computed `top`/`marginBottom`, tallest-card height sync on resize |
-| Per-card reveal | `sections/Services.tsx` | Each card gets its own `scrollTrigger` so they animate independently |
+| Page-wide horizontal drift | `sections/SkillsSummary.tsx` | Four rows scrubbed sideways by `xPercent`, with no `trigger` |
+| Stacked sticky cards | `sections/Skills.tsx` | CSS `position: sticky` with computed `top`/`marginBottom`, tallest-card height sync on resize |
+| Per-card reveal | `sections/Skills.tsx` | Each card gets its own `scrollTrigger` so they animate independently |
 | Scrubbed section scale | `sections/About.tsx` | Section shrinks to `0.95` between `bottom 80%` and `bottom 20%`, reverses on scroll-up |
 | `clip-path` image reveal | `sections/About.tsx` | Image un-collapses from a flat line, so it is never resampled or reflowed |
 | Staggered project rows | `sections/Projects.tsx` | One trigger on the list, `stagger` cascade |
@@ -51,9 +51,9 @@ Each of these is implemented in `src/`, not described aspirationally:
 |---|---|---|
 | — | `Navbar` | Off-canvas menu and the burger toggle |
 | `home` | `Hero` | Name and intro copy |
-| — | `ServiceSummary` | Keyword rows that drift sideways as you scroll |
+| — | `SkillsSummary` | Keyword rows that drift sideways as you scroll |
 | `projects` | `Projects` | Featured projects with a cursor-following preview, and a tech-stack logo marquee |
-| `services` | `Services` | Four service cards that stick and stack |
+| `skills` | `Skills` | Four skill cards that stick and stack |
 | `about` | `About` | Bio and portrait |
 | — | `ContactSummary` | Pinned marquee and tagline |
 | `contact` | `Contact` | Email, phone, and social links |
@@ -100,7 +100,7 @@ src/
   App.tsx            section order
   main.tsx           React root
   components/        AnimatedHeaderSection, AnimatedTextLines, Marquee
-  constants/         servicesData, projects, socials + their types
+  constants/         skillsData, projects, socials + their types
   lib/gsap.ts        the one registerPlugin call
   sections/          one file per section
   index.css          theme and the @utility type scale
@@ -138,10 +138,10 @@ Things that break the page rather than erroring:
 - **Section copy for `AnimatedTextLines` must be a multi-line template
   literal.** It splits on `\n`; a single-line string collapses the animation
   into one block.
-- **`ServiceSummary` rows deliberately have no `trigger`.** A triggerless
+- **`SkillsSummary` rows deliberately have no `trigger`.** A triggerless
   ScrollTrigger spans the whole page, which keeps the `xPercent` drift in
   range. Adding `start`/`end` pushes the words off screen.
-- **The `Services` cards are CSS sticky, not GSAP-pinned.** Don't also pin or
+- **The `Skills` cards are CSS sticky, not GSAP-pinned.** Don't also pin or
   scrub them.
 - **Lenis is mounted but not bridged to ScrollTrigger** — there is no
   `lenis.on("scroll", ScrollTrigger.update)` anywhere. Scrolling currently falls

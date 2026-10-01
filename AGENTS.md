@@ -21,17 +21,17 @@ Single-page GSAP portfolio (React 19 + TS + Vite 6 + Tailwind v4). Branch `dev`;
 ## Rules that break the page if ignored
 
 - **Import GSAP and its plugins from `src/lib/gsap.ts`** — the only `registerPlugin(ScrollTrigger, Observer)` call, so nothing depends on import order. Nothing imports `gsap/all` or a plugin's own path any more.
-- **Use `useGSAP` (`@gsap/react`) for component animations.** Raw `useEffect` only in `Navbar` (scroll listener), `Marquee` (needs its own `kill()`), `Services` (height sync).
+- **Use `useGSAP` (`@gsap/react`) for component animations.** Raw `useEffect` only in `Navbar` (scroll listener), `Marquee` (needs its own `kill()`), `Skills` (height sync).
 - **Lenis is mounted but not bridged** — no `lenis.on("scroll", ScrollTrigger.update)` / `gsap.ticker` anywhere. The `pin: true` in `ContactSummary.tsx` (the site's only pin) works off native scroll. Read the GSAP-PATTERNS section before "fixing" this; the naive bridge can leave the page unscrollable.
-- **`ServiceSummary` rows are deliberately trigger-less** (`scrollTrigger: { scrub: true }`, nothing else) so the page-wide `xPercent` drift stays in range. Adding `trigger`/`start`/`end` pushes the words off screen.
-- **`Services` cards are CSS `position: sticky`** with computed `top`/`marginBottom`, not GSAP. Don't also pin or scrub them.
+- **`SkillsSummary` rows are deliberately trigger-less** (`scrollTrigger: { scrub: true }`, nothing else) so the page-wide `xPercent` drift stays in range. Adding `trigger`/`start`/`end` pushes the words off screen.
+- **`Skills` cards are CSS `position: sticky`** with computed `top`/`marginBottom`, not GSAP. Don't also pin or scrub them.
 - **`Marquee`'s effect deps are `[items, reverse]`**, so a fresh array identity per render tears down and restarts the loop. Keep word lists in `src/constants` (`marqueeValues`, `marqueeRepeat`) — never inline a literal in JSX.
 - **Reveals are `gsap.from(...)`**: don't pre-style a subject in its final state in CSS. Use `fromTo` + `killTweensOf` for anything that can retrigger (`Projects.tsx` hover).
 - **`AnimatedTextLines` splits `text` on `\n`** — section copy is multi-line template literals for that reason; single-line strings collapse the animation to one block.
 
 ## Conventions
 
-- Content lives in `src/constants/index.ts` (`servicesData`, `projects`, `socials`), typed by the exported `Service`/`ServiceItem`/`Project`/`Framework`/`Social` types in the same file; asset paths are root-absolute (`/assets/...`). The arrays are annotated, so the sections import the data directly and a field rename fails `tsc -b` rather than at runtime. Add a new data shape as a type in that file, not as a local interface in the section.
+- Content lives in `src/constants/index.ts` (`skillsData`, `projects`, `socials`), typed by the exported `Skill`/`SkillItem`/`Project`/`Framework`/`Social` types in the same file; asset paths are root-absolute (`/assets/...`). The arrays are annotated, so the sections import the data directly and a field rename fails `tsc -b` rather than at runtime. Add a new data shape as a type in that file, not as a local interface in the section.
 - **React 19 ref callbacks must return `void`** (`strict` enforces it). Write `ref={(el) => { x.current[i] = el; }}`, never `ref={(el) => (x.current[i] = el)}` — the concise body returns the assigned value and is a type error.
 - No `tailwind.config.js` — the theme, the `@utility` responsive-type helpers (`banner-`, `value-`, `marquee-`, `contact-text-responsive`) and the collapsed `clip-path` all live in `src/index.css`. Extend there instead of hand-rolling type scales.
 - Font files are under `public/fonts/amiamie/{otf,ttf}/` — the `amiamie/` segment is required; `/fonts/otf/…` 404s.

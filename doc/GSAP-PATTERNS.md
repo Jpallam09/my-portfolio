@@ -42,7 +42,7 @@ Why one file? Two reasons. One import means one copy of GSAP — if two files lo
 it separately you can get two instances that don't know about each other, and
 animations silently fail. And registering in one place means no file depends on
 some *other* file happening to be imported first. This project used to do that:
-`Projects`, `Services`, `About`, `Contact` and `ContactSummary` all used
+`Projects`, `Skills`, `About`, `Contact` and `ContactSummary` all used
 `scrollTrigger:` without importing it, and only worked because
 `AnimatedTextLines.tsx` happened to register it as a side effect of being
 imported. Reorder the imports and every scroll animation on the page dies with
@@ -172,8 +172,8 @@ the scroll settings have somewhere to live. **This is the only way to pin**,
 because pinning is a ScrollTrigger feature, not a `gsap.to()` feature.
 
 Used in: `ContactSummary.tsx` (the frozen "Let's build something together"
-section), `About.tsx` (subtle scale-down), `ServiceSummary.tsx` (rows drifting
-sideways), `Services.tsx` (each card rising on its own).
+section), `About.tsx` (subtle scale-down), `SkillsSummary.tsx` (rows drifting
+sideways), `Skills.tsx` (each card rising on its own).
 
 ### `markers` — turn this on while you build
 
@@ -546,7 +546,7 @@ anything that slides.
 
 The trap: if you animate a **full-width block** (a plain `<div>`, a `<section>`,
 anything that fills the row), its width is the whole screen — so `xPercent: 20`
-is a fifth of the viewport, not a fifth of the text. The ServiceSummary rows are
+is a fifth of the viewport, not a fifth of the text. The SkillsSummary rows are
 full-width blocks, so their `xPercent: 100` and `xPercent: -100` really do mean
 a whole screen-width in each direction.
 
@@ -568,7 +568,7 @@ own element:
 Rule of thumb: check what the element actually is before trusting a percentage.
 
 **A `scrollTrigger` with no `trigger` spans the whole page.** This is a real,
-supported pattern, not a mistake — and it's what `ServiceSummary.tsx` relies on
+supported pattern, not a mistake — and it's what `SkillsSummary.tsx` relies on
 for its effect. When there's no trigger, ScrollTrigger falls back to
 `start: 0` and `end: <the scroller's maximum scroll>`, so the tween is scrubbed
 across every screen of the page rather than across the element's own pass.
@@ -577,7 +577,7 @@ Useful when you want movement that is barely perceptible on any one screen but
 adds up over a long scroll. Not useful when you want something to happen *while*
 an element is in view — for that, set `trigger` deliberately.
 
-Worth knowing: this is also why the old code in `ServiceSummary` looked wrong.
+Worth knowing: this is also why the old code in `SkillsSummary` looked wrong.
 It passed `target:` instead of `trigger:`, which ScrollTrigger doesn't
 recognise, so it got the whole-page range *by accident* and the drift was so
 slow the author may not have known it was tied to the trigger at all. The

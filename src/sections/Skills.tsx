@@ -1,21 +1,21 @@
 import { useEffect, useRef } from "react";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
-import { servicesData } from "../constants";
+import { skillsData } from "../constants";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "../lib/gsap";
 
-const Services = () => {
+const Skills = () => {
   const text = `I build secure, high-performance full-stack apps
     with smooth UX to drive growth
     not headaches.`;
-  const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const skillRefs = useRef<(HTMLDivElement | null)[]>([]);
   const innerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Give every card the height of the tallest one, so each card fully covers
   // the one behind it when stacked.
   useEffect(() => {
     const syncHeights = () => {
-      const els = serviceRefs.current.filter(
+      const els = skillRefs.current.filter(
         (el): el is HTMLDivElement => el !== null
       );
       if (!els.length) return;
@@ -43,12 +43,12 @@ const Services = () => {
   }, []);
 
   useGSAP(() => {
-    // Every service card's CONTENT slides up on its own as the card reaches the
+    // Every skill card's CONTENT slides up on its own as the card reaches the
     // screen. Only the content moves, never the sticky card itself, so the card
     // always stays in place and keeps covering the one behind it.
     // start: "top 80%" = begin when the card's top edge is 80% down the screen,
     // so it's already slightly visible before it starts moving.
-    serviceRefs.current.forEach((el, index) => {
+    skillRefs.current.forEach((el, index) => {
       const inner = innerRefs.current[index];
       if (!el || !inner) return;
 
@@ -65,25 +65,25 @@ const Services = () => {
   }, []);
 
   return (
-    <section id="services" className="min-h-screen bg-black rounded-t-4xl">
+    <section id="skills" className="min-h-screen bg-black rounded-t-4xl">
       <AnimatedHeaderSection
         subTitle={"Behind the scene, Beyond the screen"}
-        title={"Service"}
+        title={"Skills"}
         text={text}
         textColor={"text-white"}
         withScrollTrigger={true}
       />
-      {servicesData.map((service, index) => (
+      {skillsData.map((skill, index) => (
         <div
           ref={(el) => {
-            serviceRefs.current[index] = el;
+            skillRefs.current[index] = el;
           }}
           key={index}
           className="px-5 pt-6 pb-10 text-white border-t-2 sm:px-10 sm:pb-12 border-white/30"
           style={{
             position: "sticky",
             top: `calc(10vh + ${index * 5}em)`,
-            marginBottom: `${(servicesData.length - index - 1) * 5}rem`,
+            marginBottom: `${(skillsData.length - index - 1) * 5}rem`,
             zIndex: index + 1,
             backgroundColor: "#000",
             overflow: "hidden",
@@ -95,13 +95,13 @@ const Services = () => {
             <div className="flex items-center justify-between gap-4 font-light">
               <div className="flex flex-col gap-4 sm:gap-6">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl">
-                  {service.title}
+                  {skill.title}
                 </h2>
                 <p className="text-base leading-relaxed tracking-wide sm:text-xl sm:tracking-widest lg:text-2xl text-white/60 text-pretty">
-                  {service.description}
+                  {skill.description}
                 </p>
                 <div className="flex flex-col gap-2 text-xl sm:gap-4 sm:text-2xl lg:text-3xl text-white/80">
-                  {service.items.map((item, itemIndex) => (
+                  {skill.items.map((item, itemIndex) => (
                     <div key={`item-${index}-${itemIndex}`}>
                       <h3 className="flex">
                         <span className="mr-6 text-base sm:mr-12 sm:text-lg text-white/30">
@@ -109,7 +109,7 @@ const Services = () => {
                         </span>
                         {item.title}
                       </h3>
-                      {itemIndex < service.items.length - 1 && (
+                      {itemIndex < skill.items.length - 1 && (
                         <div className="w-full h-px my-2 bg-white/30" />
                       )}
                     </div>
@@ -124,4 +124,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Skills;

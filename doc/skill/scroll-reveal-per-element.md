@@ -4,7 +4,7 @@
 
 **Use when** — "each item animates separately", "per-item reveal", "list items fade in on scroll", "cards reveal individually", "staggered card entrance".
 
-Extracted from the `src/sections/Services.tsx` per-card reveal pattern.
+Extracted from the `src/sections/Skills.tsx` per-card reveal pattern.
 
 ---
 
@@ -86,7 +86,7 @@ export default RevealList;
 import RevealList from "../components/RevealList";
 
 <RevealList
-  items={servicesData}
+  items={skillsData}
   className="gap-16"
   itemClassName="px-10 py-12 text-white border-t-2 border-white/30"
 />;

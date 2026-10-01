@@ -2,14 +2,14 @@
 // arrays are checked against it as they are written. The sections import these
 // types instead of redeclaring their own, which is what makes renaming a field
 // below a compile error rather than a runtime `undefined`.
-export type ServiceItem = {
+export type SkillItem = {
   title: string;
 };
 
-export type Service = {
+export type Skill = {
   title: string;
   description: string;
-  items: ServiceItem[];
+  items: SkillItem[];
 };
 
 export type Framework = {
@@ -39,7 +39,7 @@ export type Tech = {
   icon: string;
 };
 
-export const servicesData: Service[] = [
+export const skillsData: Skill[] = [
   {
     title: "Frontend",
     description:

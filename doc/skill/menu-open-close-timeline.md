@@ -27,7 +27,7 @@ import { gsap } from "../lib/gsap";
 
 const menuLinks = [
   { label: "Home", href: "#home", id: "home" },
-  { label: "Services", href: "#services", id: "services" },
+  { label: "Skills", href: "#skills", id: "skills" },
   { label: "About", href: "#about", id: "about" },
   { label: "Projects", href: "#projects", id: "projects" },
   { label: "Contact", href: "#contact", id: "contact" },

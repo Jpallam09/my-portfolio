@@ -13,28 +13,28 @@ import { gsap } from "../lib/gsap";
 // large xPercent values below - which are percentages of the row's own width,
 // and these rows are full-width blocks, so 100 means a whole screen - will
 // slide the words straight off screen before you finish reading them.
-const ServiceSummary = () => {
+const SkillsSummary = () => {
   useGSAP(() => {
     // scrub ties the movement to the scroll position instead of playing once.
-    gsap.to("#title-service-1", {
+    gsap.to("#title-skill-1", {
       xPercent: 20,
       scrollTrigger: {
         scrub: true,
       },
     });
-    gsap.to("#title-service-2", {
+    gsap.to("#title-skill-2", {
       xPercent: -30,
       scrollTrigger: {
         scrub: true,
       },
     });
-    gsap.to("#title-service-3", {
+    gsap.to("#title-skill-3", {
       xPercent: 100,
       scrollTrigger: {
         scrub: true,
       },
     });
-    gsap.to("#title-service-4", {
+    gsap.to("#title-skill-4", {
       xPercent: -100,
       scrollTrigger: {
         scrub: true,
@@ -45,11 +45,11 @@ const ServiceSummary = () => {
     return (
     <section className="mt-20 overflow-hidden font-light leading-snug text-center mb-42
     contact-text-responsive max-lg:text-[6.3vw]!">
-      <div id="title-service-1">
+      <div id="title-skill-1">
         <p>Architecture</p>
       </div>
       <div
-        id="title-service-2"
+        id="title-skill-2"
         className="flex items-center justify-center gap-[0.3em] whitespace-nowrap
         translate-x-[1.5vw] lg:gap-3 lg:translate-x-16"
       >
@@ -58,7 +58,7 @@ const ServiceSummary = () => {
         <p>Deployment</p>
       </div>
       <div
-        id="title-service-3"
+        id="title-skill-3"
         className="flex items-center justify-center gap-[0.3em] whitespace-nowrap
         translate-x-[-3vw] lg:gap-3 lg:-translate-x-48"
       >
@@ -68,11 +68,11 @@ const ServiceSummary = () => {
         <div className="h-1 w-[1em] shrink-0 bg-gold lg:w-32" />
         <p>Scalability</p>
       </div>
-      <div id="title-service-4">
+      <div id="title-skill-4">
         <p>Databases</p>
       </div>
     </section>
   );
 };
 
-export default ServiceSummary;
+export default SkillsSummary;

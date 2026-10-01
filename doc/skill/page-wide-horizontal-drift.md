@@ -4,7 +4,7 @@
 
 **Use when** — "words drift sideways", "parallax keywords", "text sliding as you scroll", "sideways parallax", "headline drift effect", "rows moving horizontally on scroll".
 
-Extracted from the `src/sections/ServiceSummary.tsx` pattern.
+Extracted from the `src/sections/SkillsSummary.tsx` pattern.
 
 ---
 

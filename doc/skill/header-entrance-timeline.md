@@ -148,7 +148,7 @@ import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 // Every section below the hero - waits for scroll
 <AnimatedHeaderSection
   subTitle="What I do"
-  title="Services"
+  title="Skills"
   text={text}
   textColor="text-white"
   withScrollTrigger={true}
