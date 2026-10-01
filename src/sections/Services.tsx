@@ -22,6 +22,7 @@ const Services = () => {
     with smooth UX to drive growth
     not headaches.`;
   const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const services = servicesData as Service[];
 
   // Give every card the height of the tallest one, so each card fully covers
   // the one behind it when stacked.
@@ -76,7 +77,7 @@ const Services = () => {
         textColor={"text-white"}
         withScrollTrigger={true}
       />
-      {(servicesData as Service[]).map((service, index) => (
+      {services.map((service, index) => (
         <div
           ref={(el) => {
             serviceRefs.current[index] = el;
@@ -85,7 +86,7 @@ const Services = () => {
           className="sticky px-5 pt-6 pb-10 text-white bg-black border-t-2 sm:px-10 sm:pb-12 border-white/30"
           style={{
             top: `calc(10vh + ${index * 5}em)`,
-            marginBottom: `${(servicesData.length - index - 1) * 5}rem`,
+            marginBottom: `${(services.length - index - 1) * 5}rem`,
           }}
         >
           <div className="flex items-center justify-between gap-4 font-light">
@@ -115,6 +116,10 @@ const Services = () => {
           </div>
         </div>
       ))}
+
+      {/* Empty space after the last card. The stack stays pinned while this
+          scrolls past, so the last card finishes stacking before About arrives. */}
+      <div aria-hidden className="h-[40vh]" />
     </section>
   );
 };
