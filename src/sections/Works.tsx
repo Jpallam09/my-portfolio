@@ -1,12 +1,26 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import { projects } from "../constants";
 import { useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { gsap } from "../lib/gsap";
 import { useGSAP } from "@gsap/react";
 
+// Shape of one entry in projects. If your constants file already has
+// a type for this, import it and delete these two interfaces.
+interface Framework {
+  id: number | string;
+  name: string;
+}
+
+interface Project {
+  id: number | string;
+  name: string;
+  image: string;
+  frameworks: Framework[];
+}
+
 const Works = () => {
-  const overlayRefs = useRef<Array<HTMLElement | null>>([]);
+  const overlayRefs = useRef<Array<HTMLDivElement | null>>([]);
   const previewRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
 
@@ -15,11 +29,15 @@ const Works = () => {
     crafted with passion to drive
     results and impact.`;
 
+  const works = projects as Project[];
+
   const mouse = useRef({ x: 0, y: 0 });
-  const moveX = useRef<((value: number) => void) | null>(null);
-  const moveY = useRef<((value: number) => void) | null>(null);
+  const moveX = useRef<gsap.QuickToFunc | null>(null);
+  const moveY = useRef<gsap.QuickToFunc | null>(null);
 
   useGSAP(() => {
+    if (!previewRef.current) return;
+
     // Mouse move fires roughly 60 times a second, so don't call gsap.to() each
     // time - that creates a brand new tween every event and the page janks.
     // gsap.quickTo() hands you a function you can call as often as you like;
@@ -119,8 +137,8 @@ const Works = () => {
     // +24 nudges the preview off the cursor so it doesn't sit under it.
     mouse.current.x = e.clientX + 24;
     mouse.current.y = e.clientY + 24;
-    moveX.current(mouse.current.x);
-    moveY.current(mouse.current.y);
+    moveX.current?.(mouse.current.x);
+    moveY.current?.(mouse.current.y);
   };
 
   return (
@@ -137,7 +155,7 @@ const Works = () => {
         className="relative flex flex-col font-light"
         onMouseMove={handleMouseMove}
       >
-        {projects.map((project, index) => (
+        {works.map((project, index) => (
           <div
             key={project.id}
             className="project-row relative flex flex-col gap-1 py-5 cursor-pointer group md:gap-0"
@@ -162,7 +180,7 @@ const Works = () => {
             {/* divider */}
             <div className="w-full h-0.5 bg-black/80" />
             {/* framework */}
-            <div className="flex px-10 text-xs leading-loose uppercase transtion-all duration-500 md:text-sm gap-x-5 md:group-hover:px-12">
+            <div className="flex px-10 text-xs leading-loose uppercase transition-all duration-500 md:text-sm gap-x-5 md:group-hover:px-12">
               {project.frameworks.map((framework) => (
                 <p
                   key={framework.id}
@@ -173,16 +191,11 @@ const Works = () => {
               ))}
             </div>
             {/* mobile preview image */}
-            <div className="relative flex items-center justify-center px-10 md:hidden h-100">
-              <img
-                src={project.bgImage}
-                alt={`${project.name}-bg-image`}
-                className="object-cover w-full h-full rounded-md brightness-50"
-              />
+            <div className="px-10 md:hidden">
               <img
                 src={project.image}
                 alt={`${project.name}-image`}
-                className="absolute bg-center px-14 rounded-xl"
+                className="w-full h-auto rounded-xl"
               />
             </div>
           </div>
@@ -194,7 +207,7 @@ const Works = () => {
         >
           {currentIndex !== null && (
             <img
-              src={projects[currentIndex].image}
+              src={works[currentIndex]?.image}
               alt="preview"
               className="object-cover w-full h-full"
             />

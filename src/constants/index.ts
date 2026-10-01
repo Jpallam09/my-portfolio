@@ -49,7 +49,6 @@ export const projects = [
       "A desktop application for managing district-wide teacher records and administrative documents, built for DepEd San Mateo North. Runs on Electron with offline-first file handling and external drive sync.",
     href: "https://github.com/Jpallam09/smnd-dms",
     image: "/assets/projects/smnd-ddms.webp",
-    bgImage: "/assets/backgrounds/blanket.jpg",
     frameworks: [
       { id: 1, name: "Electron" },
       { id: 2, name: "React" },
@@ -64,7 +63,6 @@ export const projects = [
       "A municipal incident reporting platform with role-based dashboards, geotagged reports, an approval workflow for edits and deletions, and Meilisearch-powered search across records.",
     href: "https://github.com/Jpallam09/mdrrmo-smi",
     image: "/assets/projects/mdrrmo.webp",
-    bgImage: "/assets/backgrounds/curtains.jpg",
     frameworks: [
       { id: 1, name: "Laravel" },
       { id: 2, name: "PHP" },
@@ -79,7 +77,6 @@ export const projects = [
       "An offline-first Expo app where admins manage reviewers and quizzes while users read and take them. Attempts save locally to SQLite and sync to Supabase when a connection is available.",
     href: "https://github.com/Jpallam09/expo-review-quiz-app",
     image: "/assets/projects/quiz-app-thumbnail.webp",
-    bgImage: "/assets/backgrounds/map.jpg",
     frameworks: [
       { id: 1, name: "React Native" },
       { id: 2, name: "Expo" },
@@ -95,7 +92,6 @@ export const projects = [
       "A Django document archive that organizes uploaded files into nested folders with typed categories, in-browser previews, and password protection for confidential records.",
     href: "https://github.com/Jpallam09/fdas",
     image: "/assets/projects/fdas.webp",
-    bgImage: "/assets/backgrounds/poster.jpg",
     frameworks: [
       { id: 1, name: "Django" },
       { id: 2, name: "Python" },

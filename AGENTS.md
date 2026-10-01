@@ -42,5 +42,5 @@ Single-page GSAP portfolio (React 19 + TS + Vite 6 + Tailwind v4). Branch `dev`;
 - The email is a literal duplicated in `Navbar.tsx` and `Contact.tsx` (not in `src/constants`); the phone is only in `Contact.tsx`.
 - Two typo'd Tailwind classes compile to nothing: `transtion-all` (`Works.tsx`), `tracking-wides` (`Contact.tsx`).
 - `marqueeRepeat()` is called inline in JSX in `ContactSummary.tsx` and `Contact.tsx`, violating the Marquee rule above — latent unless either section gains state.
-- `react-responsive` is an unused dependency and `public/assets/backgrounds/table.jpg` is unreferenced; `public/` (~6.6 MB) is copied verbatim into `dist/`.
+- `react-responsive` is an unused dependency; `public/` (~3.6 MB, half of it `public/images/jp.png`) is copied verbatim into `dist/`.
 - `Contact.tsx` spells "discus".
