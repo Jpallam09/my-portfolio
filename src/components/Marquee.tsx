@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react";
-import { gsap } from "../lib/gsap";
-import { Observer } from "gsap/all";
+import { gsap, Observer } from "../lib/gsap";
 import { useEffect, useRef } from "react";
 
 interface MarqueeProps {
@@ -70,7 +69,6 @@ const Marquee = ({
       config.snap === false
         ? (v: number) => v
         : gsap.utils.snap(config.snap || 1); // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
-    let totalWidth: number;
     let curX: number;
     let distanceToStart: number;
     let distanceToLoop: number;
@@ -90,7 +88,7 @@ const Marquee = ({
       },
     });
     gsap.set(items, { x: 0 });
-    totalWidth =
+    const totalWidth =
       items[length - 1].offsetLeft +
       (xPercents[length - 1] / 100) * widths[length - 1] -
       startX +
@@ -130,8 +128,10 @@ const Marquee = ({
       times[i] = distanceToStart / pixelsPerSecond;
     }
     function toIndex(index: number, vars: gsap.TweenVars = {}) {
-      Math.abs(index - curIndex) > length / 2 &&
-        (index += index > curIndex ? -length : length); // always go in the shortest direction
+      if (Math.abs(index - curIndex) > length / 2) {
+        // always go in the shortest direction
+        index += index > curIndex ? -length : length;
+      }
       const newIndex = gsap.utils.wrap(0, length, index);
       let time = times[newIndex];
       if (time > tl.time() !== index > curIndex) {
@@ -143,10 +143,14 @@ const Marquee = ({
       vars.overwrite = true;
       return tl.tweenTo(time, vars);
     }
-    tl.next = (vars) => toIndex(curIndex + 1, vars);
-    tl.previous = (vars) => toIndex(curIndex - 1, vars);
+    // The parameter types are written out because gsap.core.Timeline carries a
+    // `[key: string]: any` index signature, so the properties added above are
+    // `any` as far as inference is concerned and the arrow parameters would
+    // otherwise have no contextual type to come from.
+    tl.next = (vars?: gsap.TweenVars) => toIndex(curIndex + 1, vars);
+    tl.previous = (vars?: gsap.TweenVars) => toIndex(curIndex - 1, vars);
     tl.current = () => curIndex;
-    tl.toIndex = (index, vars) => toIndex(index, vars);
+    tl.toIndex = (index: number, vars?: gsap.TweenVars) => toIndex(index, vars);
     tl.times = times;
     tl.progress(1, true).progress(0, true); // pre-render for performance
     if (config.reversed) {
