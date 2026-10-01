@@ -42,7 +42,7 @@ Why one file? Two reasons. One import means one copy of GSAP — if two files lo
 it separately you can get two instances that don't know about each other, and
 animations silently fail. And registering in one place means no file depends on
 some *other* file happening to be imported first. This project used to do that:
-`Works`, `Services`, `About`, `Contact` and `ContactSummary` all used
+`Projects`, `Services`, `About`, `Contact` and `ContactSummary` all used
 `scrollTrigger:` without importing it, and only worked because
 `AnimatedTextLines.tsx` happened to register it as a side effect of being
 imported. Reorder the imports and every scroll animation on the page dies with
@@ -95,7 +95,7 @@ gsap.from(".project-row", {
 `stagger: 0.3` means row 1 starts at 0s, row 2 at 0.3s, row 3 at 0.6s, and so
 on. It works on any list, no extra code.
 
-Used in: `Works.tsx` (project rows), `AnimatedTextLines.tsx` (body copy),
+Used in: `Projects.tsx` (project rows), `AnimatedTextLines.tsx` (body copy),
 `Contact.tsx` (contact blocks), `Navbar.tsx` (menu links).
 
 ---
@@ -269,7 +269,7 @@ instead of a corner, so they stay in place while turning.
 
 ## 7. Following the mouse — `gsap.quickTo`
 
-`Works.tsx`. The floating preview image that trails your cursor.
+`Projects.tsx`. The floating preview image that trails your cursor.
 
 ```ts
 const moveX = useRef(null);
@@ -301,7 +301,7 @@ Use this for: cursor followers, magnetic buttons, drag previews, mouse parallax.
 
 ## 8. Hover effects that survive fast movement
 
-`Works.tsx`. Move your mouse across the rows quickly and the black overlay can
+`Projects.tsx`. Move your mouse across the rows quickly and the black overlay can
 get stuck half-open.
 
 ```ts

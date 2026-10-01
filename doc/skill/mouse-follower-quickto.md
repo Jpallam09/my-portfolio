@@ -4,7 +4,7 @@
 
 **Use when** — "cursor follower", "mouse follower image", "image follows cursor", "custom cursor preview", "trailing preview on hover", "floating image on hover".
 
-Extracted from the `src/sections/Works.tsx` project-preview pattern.
+Extracted from the `src/sections/Projects.tsx` project-preview pattern.
 
 ---
 
@@ -26,7 +26,7 @@ import { useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "../lib/gsap";
 
-const Works = () => {
+const Projects = () => {
   const previewRef = useRef<HTMLDivElement | null>(null);
   const moveX = useRef<((value: number) => void) | null>(null);
   const moveY = useRef<((value: number) => void) | null>(null);

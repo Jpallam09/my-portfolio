@@ -133,6 +133,24 @@ body {
   @apply text-[68px] sm:text-[118px] md:text-[70px] lg:text-[96px] leading-9 sm:leading-16 md:leading-[0.511] lg:leading-[0.519];
 }
 
+/* The same scale as banner-text-responsive, with the first two steps reduced so
+   an 8-character title fits. The md and lg steps are unchanged because they
+   already fit with room to spare.
+
+   Measured against the real font (Amiamie, uppercase), "PROJECTS" needs 345px of
+   the 310px available at 390px wide, and 599px of the 560px available at 640px.
+   At 60px it needs 304px, at 104px it needs 528px. Without this the overflow is
+   not visible as an error - body is `overflow-x: hidden`, so it just clips the
+   word mid-letter.
+
+   A separate @utility, not an extra class on the same element: banner-text-
+   responsive @applies its own font-size, and an appended utility loses to it
+   whatever order the two classes are in. See titleClassName in
+   AnimatedHeaderSection. */
+@utility banner-text-responsive-compact {
+  @apply text-[60px] sm:text-[104px] md:text-[70px] lg:text-[96px] leading-9 sm:leading-16 md:leading-[0.511] lg:leading-[0.519];
+}
+
 @utility value-text-responsive {
   @apply text-2xl md:text-[26px] lg:text-[32px];
 }

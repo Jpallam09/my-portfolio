@@ -6,15 +6,13 @@ import { useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { gsap } from "../lib/gsap";
 import { useGSAP } from "@gsap/react";
 
-const Works = () => {
+const Projects = () => {
   const overlayRefs = useRef<Array<HTMLDivElement | null>>([]);
   const previewRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
 
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  const text = `Featured projects that have been meticulously
-    crafted with passion to drive
-    results and impact.`;
+  const text = `Featured projects built for results.`;
 
   const mouse = useRef({ x: 0, y: 0 });
   const moveX = useRef<gsap.QuickToFunc | null>(null);
@@ -127,10 +125,15 @@ const Works = () => {
   };
 
   return (
-    <section id="work" className="flex flex-col min-h-screen">
+    <section id="projects" className="flex flex-col min-h-screen">
       <AnimatedHeaderSection
         subTitle={"Logic meets Aesthetics, Seamlessly"}
-        title={"Works"}
+        title={"Projects"}
+        // "Projects" is 8 characters of display type where the other headings
+        // are 5-7, and at the base scale it is wider than the viewport at 390px
+        // and at the sm breakpoint. body has overflow-x: hidden, so the overflow
+        // would be clipped mid-letter rather than scrollable.
+        titleClassName="banner-text-responsive-compact"
         text={text}
         textColor={"text-black"}
         withScrollTrigger={true}
@@ -230,4 +233,4 @@ const Works = () => {
   );
 };
 
-export default Works;
+export default Projects;

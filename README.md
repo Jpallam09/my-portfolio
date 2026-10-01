@@ -36,9 +36,10 @@ Each of these is implemented in `src/`, not described aspirationally:
 | Per-card reveal | `sections/Services.tsx` | Each card gets its own `scrollTrigger` so they animate independently |
 | Scrubbed section scale | `sections/About.tsx` | Section shrinks to `0.95` between `bottom 80%` and `bottom 20%`, reverses on scroll-up |
 | `clip-path` image reveal | `sections/About.tsx` | Image un-collapses from a flat line, so it is never resampled or reflowed |
-| Staggered project rows | `sections/Works.tsx` | One trigger on the list, `stagger` cascade |
-| Hover curtain wipe | `sections/Works.tsx` | `fromTo` on a `clip-path` polygon plus `killTweensOf`, so fast pointer movement can't leave the overlay stuck |
-| Weighted mouse follower | `sections/Works.tsx` | `gsap.quickTo` with mismatched durations (1.5s on x, 2s on y) so the preview trails with a sense of weight |
+| Staggered project rows | `sections/Projects.tsx` | One trigger on the list, `stagger` cascade |
+| Hover curtain wipe | `sections/Projects.tsx` | `fromTo` on a `clip-path` polygon plus `killTweensOf`, so fast pointer movement can't leave the overlay stuck |
+| Weighted mouse follower | `sections/Projects.tsx` | `gsap.quickTo` with mismatched durations (1.5s on x, 2s on y) so the preview trails with a sense of weight |
+| Tech-stack logo strip | `sections/Projects.tsx` | The marquee again, with `renderItem` drawing monochrome `simple-icons` glyphs instead of words |
 | Pinned section | `sections/ContactSummary.tsx` | `pin: true`, `scrub: 0.5`, `start: "center center"`, `end: "+=800 center"` |
 | Social links reveal | `sections/Contact.tsx` | Three blocks slide up one after another |
 
@@ -51,9 +52,9 @@ Each of these is implemented in `src/`, not described aspirationally:
 | — | `Navbar` | Off-canvas menu and the burger toggle |
 | `home` | `Hero` | Name and intro copy |
 | — | `ServiceSummary` | Keyword rows that drift sideways as you scroll |
+| `projects` | `Projects` | Featured projects with a cursor-following preview, and a tech-stack logo marquee |
 | `services` | `Services` | Four service cards that stick and stack |
 | `about` | `About` | Bio and portrait |
-| `work` | `Works` | Featured projects with a cursor-following preview |
 | — | `ContactSummary` | Pinned marquee and tagline |
 | `contact` | `Contact` | Email, phone, and social links |
 

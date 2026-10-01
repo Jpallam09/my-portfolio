@@ -26,7 +26,7 @@ Single-page GSAP portfolio (React 19 + TS + Vite 6 + Tailwind v4). Branch `dev`;
 - **`ServiceSummary` rows are deliberately trigger-less** (`scrollTrigger: { scrub: true }`, nothing else) so the page-wide `xPercent` drift stays in range. Adding `trigger`/`start`/`end` pushes the words off screen.
 - **`Services` cards are CSS `position: sticky`** with computed `top`/`marginBottom`, not GSAP. Don't also pin or scrub them.
 - **`Marquee`'s effect deps are `[items, reverse]`**, so a fresh array identity per render tears down and restarts the loop. Keep word lists in `src/constants` (`marqueeValues`, `marqueeRepeat`) — never inline a literal in JSX.
-- **Reveals are `gsap.from(...)`**: don't pre-style a subject in its final state in CSS. Use `fromTo` + `killTweensOf` for anything that can retrigger (`Works.tsx` hover).
+- **Reveals are `gsap.from(...)`**: don't pre-style a subject in its final state in CSS. Use `fromTo` + `killTweensOf` for anything that can retrigger (`Projects.tsx` hover).
 - **`AnimatedTextLines` splits `text` on `\n`** — section copy is multi-line template literals for that reason; single-line strings collapse the animation to one block.
 
 ## Conventions
@@ -40,9 +40,9 @@ Single-page GSAP portfolio (React 19 + TS + Vite 6 + Tailwind v4). Branch `dev`;
 
 ## Known pre-existing issues (leave alone unless asked)
 
-- `Works.tsx` renders no `<a>`, so `projects[].href` is dead data; its hover/preview effects are hard-guarded by `window.innerWidth < 768` and are invisible on touch.
+- `Projects.tsx` renders no `<a>`, so `projects[].href` is dead data; its hover/preview effects are hard-guarded by `window.innerWidth < 768` and are invisible on touch.
 - The email is a literal duplicated in `Navbar.tsx` and `Contact.tsx` (not in `src/constants`); the phone is only in `Contact.tsx`.
-- Two typo'd Tailwind classes compile to nothing: `transtion-all` (`Works.tsx`), `tracking-wides` (`Contact.tsx`).
+- Two typo'd Tailwind classes compile to nothing: `transtion-all` (`Projects.tsx`), `tracking-wides` (`Contact.tsx`).
 - `marqueeRepeat()` is called inline in JSX in `ContactSummary.tsx` and `Contact.tsx`, violating the Marquee rule above — latent unless either section gains state.
 - `react-responsive` is an unused dependency; `public/` (~3.6 MB, half of it `public/images/jp.png`) is copied verbatim into `dist/`.
 - `Contact.tsx` spells "discus".

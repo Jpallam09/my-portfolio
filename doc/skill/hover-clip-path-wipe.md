@@ -4,7 +4,7 @@
 
 **Use when** — "hover wipe animation", "clip-path hover", "row hover reveal", "curtain hover effect", "wipe overlay on hover", "inverted hover".
 
-Extracted from the `src/sections/Works.tsx` project-row hover pattern.
+Extracted from the `src/sections/Projects.tsx` project-row hover pattern.
 
 ---
 
@@ -24,7 +24,7 @@ No new component needed — a snippet for the existing list component. Requires 
 import { useRef } from "react";
 import { gsap } from "../lib/gsap";
 
-const Works = () => {
+const Projects = () => {
   const overlayRefs = useRef<Array<HTMLElement | null>>([]);
 
   const handleMouseEnter = (index: number) => {

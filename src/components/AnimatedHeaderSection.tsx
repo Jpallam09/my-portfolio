@@ -9,6 +9,13 @@ type AnimatedHeaderSectionProps = {
   text: string;
   textColor: string;
   withScrollTrigger?: boolean;
+  // The display-type scale applied to the title. This REPLACES the default
+  // rather than being appended to it: banner-text-responsive @applies its own
+  // font-size, and an appended utility loses to it no matter what order the two
+  // classes are in, so an append-style override would silently do nothing.
+  // Pass a different @utility from index.css instead - see
+  // banner-text-responsive-compact for a scale that fits a longer word.
+  titleClassName?: string;
 };
 
 const AnimatedHeaderSection = ({
@@ -17,6 +24,7 @@ const AnimatedHeaderSection = ({
   text,
   textColor,
   withScrollTrigger = false,
+  titleClassName = "banner-text-responsive",
 }: AnimatedHeaderSectionProps) => {
   const contextRef = useRef(null);
   const headerRef = useRef(null);
@@ -73,7 +81,7 @@ const AnimatedHeaderSection = ({
           </p>
           <div className="px-10">
             <h1
-              className={`flex flex-col gap-12 uppercase banner-text-responsive sm:gap-16 md:block ${textColor}`}
+              className={`flex flex-col gap-12 uppercase sm:gap-16 md:block ${textColor} ${titleClassName}`}
             >
               {titleParts.map((part, index) => (
                 <span key={index}>{part} </span>

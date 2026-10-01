@@ -4,7 +4,7 @@
 
 **Use when** — "staggered list", "cascade items in", "stagger the rows", "list appears one after another", "staggered scroll reveal", "rows fade in one by one".
 
-Extracted from the `src/sections/Contact.tsx` and `src/sections/Works.tsx` staggered reveal patterns.
+Extracted from the `src/sections/Contact.tsx` and `src/sections/Projects.tsx` staggered reveal patterns.
 
 ---
 

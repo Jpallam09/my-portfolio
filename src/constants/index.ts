@@ -31,7 +31,7 @@ export type Social = {
   href: string;
 };
 
-// A technology in the logo marquee under Works. `icon` is an Iconify icon name
+// A technology in the logo marquee under Projects. `icon` is an Iconify icon name
 // (the `simple-icons` set), which @iconify/react resolves at runtime.
 export type Tech = {
   id: number;

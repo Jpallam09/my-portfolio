@@ -29,7 +29,7 @@ const menuLinks = [
   { label: "Home", href: "#home", id: "home" },
   { label: "Services", href: "#services", id: "services" },
   { label: "About", href: "#about", id: "about" },
-  { label: "Work", href: "#work", id: "work" },
+  { label: "Projects", href: "#projects", id: "projects" },
   { label: "Contact", href: "#contact", id: "contact" },
 ];
 
