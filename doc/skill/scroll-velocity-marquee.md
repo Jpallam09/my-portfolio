@@ -35,7 +35,7 @@ export { gsap };
 
 ```tsx
 import { Observer } from "gsap/all";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { gsap } from "../lib/gsap";
 
 // Reads a value GSAP hands back and turns it into a finite number. GSAP returns
@@ -50,16 +50,16 @@ const num = (value: unknown) => {
 type MarqueeProps = {
   items: string[];
   className?: string;
-  icon?: string;
-  iconClassName?: string;
+  itemClassName?: string;
+  renderItem?: (item: string, index: number) => ReactNode;
   reverse?: boolean;
 };
 
 const Marquee = ({
   items,
   className = "text-white bg-black",
-  icon = "mdi:star-four-points",
-  iconClassName = "",
+  itemClassName = "flex items-center px-16 gap-x-32",
+  renderItem,
   reverse = false,
 }: MarqueeProps) => {
   const itemsRef = useRef<Array<HTMLElement | null>>([]);
@@ -272,9 +272,9 @@ const Marquee = ({
               itemsRef.current[index] = el;
             }}
             key={index}
-            className="flex items-center px-16 gap-x-32"
+            className={itemClassName}
           >
-            {text}
+            {renderItem ? renderItem(text, index) : text}
           </span>
         ))}
       </div>
@@ -294,6 +294,23 @@ export default Marquee;
   items={["contact me"]}
   reverse={true}
   className="text-black bg-transparent border-y-2"
+/>
+```
+
+A logo strip reuses the same component with `renderItem` and a tighter
+`itemClassName`. The sizes go on a **wrapper**, not on the icon — see the trap in
+section 6:
+
+```tsx
+<Marquee
+  items={techNames}
+  itemClassName="flex items-center px-10"
+  className="text-black bg-transparent border-y-2"
+  renderItem={(name) => (
+    <span className="flex size-7 items-center justify-center md:size-9">
+      <Icon icon={iconsByName[name]} className="size-full" />
+    </span>
+  )}
 />
 ```
 
@@ -318,6 +335,8 @@ export default Marquee;
 | `obs.kill()` in cleanup | required | `Observer` is a plugin instance, not part of a `useGSAP` context. GSAP does not clean it up. Every remount leaks one |
 | `tl.kill()` in cleanup | required | The timeline is a bare `gsap.timeline()`, not created inside `useGSAP`, so nothing kills it for you |
 | `raw `useEffect`, not `useGSAP` | deliberate | This holds a timeline and a plugin instance rather than making declarative tweens. `useGSAP` is for the latter |
+| `itemClassName` default `px-16 gap-x-32` | word strips | Sized for display type. A logo strip needs ~`px-10` and no separator gap |
+| sized wrapper around async content | required | The loop measures every item once, on mount. Content that arrives later (icon fonts, Iconify, `<img>` without dimensions) changes the width after the measurement and the strip tears. Reserve the box up front |
 
 ## 6. Do not
 
@@ -332,6 +351,10 @@ export default Marquee;
 - **Do not use `let time` and then reassign it via `const`.** In `toIndex`, `time` is adjusted after being read from `times[]`, so it must be `let`. `const` fails to compile.
 - **Do not pass unfiltered refs.** `itemsRef.current` can hold `null` holes while React mounts. The `.filter()` type guard keeps `null` out of the loop maths.
 - **Do not run this on low-power mobile without checking the frame rate.** An always-animating strip plus a scroll Observer is a genuine battery cost. Consider pausing it when off screen.
+- **Do not put the icon size on the icon itself when the content loads async.** `@iconify/react` renders an empty `<span>` — with **no** `className` — until the icon data arrives, so a bare `<Icon className="size-9">` measures 0 wide on mount, the loop is built on those wrong widths, and it tears the moment the icons paint. Put a fixed size on a wrapper element and let the icon fill it (`size-full`). The same applies to any `<img>` without `width`/`height`.
+- **Do not inline `items`.** `items` is a dependency of the effect, so `items={["a", "b"]}` is a new array every render and rebuilds the loop on every unrelated re-render. Keep the list at module scope. `renderItem` as an inline arrow is fine — it is not a dependency.
+- **Do not use the default `px-16 gap-x-32` item spacing for a logo strip.** 64px of padding and a 32rem separator gap are sized for display type. Pass `itemClassName`.
+- **Do not let the items be shorter than the widest viewport.** The loop has one copy of the sequence; if it is narrower than the screen you get bare background at the right edge. Budget it: item count × (logo + padding) must beat 2560px.
 
 ## 7. Done when
 
@@ -342,5 +365,6 @@ export default Marquee;
 - [ ] Toggling/remounting the component does not make it progressively more sensitive to scroll (the `obs.kill()` check)
 - [ ] No horizontal scrollbar appears
 - [ ] Items do not wrap to a second line
+- [ ] On a cold load (empty cache, network throttled) the strip does not tear once the async content lands — this is the check for the reserved-box trap above
 - [ ] `npx tsc --noEmit` passes under `strict: true`
 - [ ] Project build passes

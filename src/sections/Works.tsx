@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
-import { projects } from "../constants";
+import Marquee from "../components/Marquee";
+import { marqueeTech, projects, techIcons } from "../constants";
 import { useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { gsap } from "../lib/gsap";
 import { useGSAP } from "@gsap/react";
@@ -198,6 +199,33 @@ const Works = () => {
           )}
         </div>
       </div>
+
+      {/* tech stack strip. Lives outside the list div above so hovering it
+          doesn't drag the floating preview image along. `items` is the stable
+          array from constants; only `renderItem` is a fresh function each
+          render, and the Marquee effect doesn't depend on it.
+
+          The size-7/md:size-9 wrapper is load-bearing, not styling. Iconify
+          renders an empty, unclassed <span> until the icon data arrives, so a
+          bare <Icon> measures 0 wide on mount. The loop is built from widths
+          measured at mount, so reserving the box here keeps every item the same
+          width before and after the icons paint - otherwise the strip tears.
+          Don't move that size onto the Icon itself.
+
+          One copy of the strip has to be wider than the widest viewport or the
+          loop runs out of items and leaves bare background at the right edge.
+          22 logos at px-10 lands around 2.4-2.5k, so treat the count in
+          techStack as load-bearing if you drop items. */}
+      <Marquee
+        items={marqueeTech}
+        itemClassName="flex items-center px-10"
+        className="text-black bg-transparent border-y-2 mt-16 mb-16"
+        renderItem={(name) => (
+          <span className="flex size-7 items-center justify-center md:size-9">
+            <Icon icon={techIcons[name] ?? ""} className="size-full" />
+          </span>
+        )}
+      />
     </section>
   );
 };

@@ -31,6 +31,14 @@ export type Social = {
   href: string;
 };
 
+// A technology in the logo marquee under Works. `icon` is an Iconify icon name
+// (the `simple-icons` set), which @iconify/react resolves at runtime.
+export type Tech = {
+  id: number;
+  name: string;
+  icon: string;
+};
+
 export const servicesData: Service[] = [
   {
     title: "Frontend",
@@ -134,6 +142,41 @@ export const socials: Social[] = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/johnpaulallam/" },
   { name: "GitHub", href: "https://github.com/jpallam09" },
 ];
+
+export const techStack: Tech[] = [
+  { id: 1, name: "React", icon: "simple-icons:react" },
+  { id: 2, name: "TypeScript", icon: "simple-icons:typescript" },
+  { id: 3, name: "Tailwind CSS", icon: "simple-icons:tailwindcss" },
+  { id: 4, name: "Shadcn/ui", icon: "simple-icons:shadcnui" },
+  { id: 5, name: "GSAP", icon: "simple-icons:gsap" },
+  { id: 6, name: "Node.js", icon: "simple-icons:nodedotjs" },
+  { id: 7, name: "Next.js", icon: "simple-icons:nextdotjs" },
+  { id: 8, name: "Laravel", icon: "simple-icons:laravel" },
+  { id: 9, name: "Django", icon: "simple-icons:django" },
+  { id: 10, name: "PHP", icon: "simple-icons:php" },
+  { id: 11, name: "MySQL", icon: "simple-icons:mysql" },
+  { id: 12, name: "PostgreSQL", icon: "simple-icons:postgresql" },
+  { id: 13, name: "MongoDB", icon: "simple-icons:mongodb" },
+  { id: 14, name: "Redis", icon: "simple-icons:redis" },
+  { id: 15, name: "SQLite", icon: "simple-icons:sqlite" },
+  { id: 16, name: "Supabase", icon: "simple-icons:supabase" },
+  { id: 17, name: "Vite", icon: "simple-icons:vite" },
+  { id: 18, name: "Electron", icon: "simple-icons:electron" },
+  { id: 19, name: "Expo", icon: "simple-icons:expo" },
+  { id: 20, name: "Vercel", icon: "simple-icons:vercel" },
+  { id: 21, name: "Render", icon: "simple-icons:render" },
+  { id: 22, name: "Hostinger", icon: "simple-icons:hostinger" },
+];
+
+// The logo marquee renders bare icons, so it works off the tech names and looks
+// each one's glyph up as it goes. Both arrays are built once at module scope, so
+// they are the same object on every render - the Marquee effect keys off
+// `items`, and a list built inside a component would restart the loop on every
+// unrelated re-render (see marqueeValues above).
+export const marqueeTech: string[] = techStack.map((tech) => tech.name);
+export const techIcons: Record<string, string> = Object.fromEntries(
+  techStack.map((tech) => [tech.name, tech.icon]),
+);
 
 // Marquee word lists. These live here rather than inside the sections so the
 // array is the same object on every render. The Marquee component rebuilds its

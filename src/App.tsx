@@ -14,9 +14,9 @@ const App = () => {
       <Navbar />
       <Hero />
       <ServiceSummary />
+      <Works />
       <Services />
       <About />
-      <Works />
       <ContactSummary />
       <Contact />
     </ReactLenis>

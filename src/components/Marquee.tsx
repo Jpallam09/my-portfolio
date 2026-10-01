@@ -1,12 +1,21 @@
 import { Icon } from "@iconify/react";
 import { gsap, Observer } from "../lib/gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 interface MarqueeProps {
   items: string[];
   className?: string;
   icon?: string;
   iconClassName?: string;
+  // Per-item wrapper. Defaults to the word-strip layout; override it when the
+  // items are images rather than words, where 64px of padding either side and a
+  // 32rem separator gap are far too much air.
+  itemClassName?: string;
+  // Replaces the default `{text} <Icon />` content of one item. Takes the item
+  // string, so the same `items` array can be rendered any way. Rendered content
+  // may be an inline arrow - unlike `items` it is not a dependency of the effect
+  // below, so a new function identity each render does not rebuild the loop.
+  renderItem?: (item: string, index: number) => ReactNode;
   reverse?: boolean;
 }
 
@@ -34,6 +43,8 @@ const Marquee = ({
   className = "text-white bg-black",
   icon = "mdi:star-four-points",
   iconClassName = "",
+  itemClassName = "flex items-center px-16 gap-x-32",
+  renderItem,
   reverse = false,
 }: MarqueeProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -212,9 +223,15 @@ const Marquee = ({
             ref={(el) => {
               itemsRef.current[index] = el;
             }}
-            className="flex items-center px-16 gap-x-32"
+            className={itemClassName}
           >
-            {text} <Icon icon={icon} className={iconClassName} />
+            {renderItem ? (
+              renderItem(text, index)
+            ) : (
+              <>
+                {text} <Icon icon={icon} className={iconClassName} />
+              </>
+            )}
           </span>
         ))}
       </div>
