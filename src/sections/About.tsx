@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "../lib/gsap";
 
 const About = () => {
-const text = `Driven Software Developer
+  const text = `Driven Software Developer
     Building scalable solutions from concept to production`;
 
   const aboutText = `Focused on building fast, intuitive applications and
@@ -13,9 +13,9 @@ const text = `Driven Software Developer
   Grounded in clean architecture, performance,
   and practical problem-solving.
   When I'm not coding:
-• Designing clean systems and optimizing performance
-• Exploring software patterns and developer tooling
-• Solving complex technical challenges`;
+- Designing clean systems and optimizing performance
+- Exploring software patterns and developer tooling
+- Solving complex technical challenges`;
   const imgRef = useRef<HTMLImageElement | null>(null);
   useGSAP(() => {
     // The whole section shrinks slightly as it goes past, which pulls the eye
@@ -63,7 +63,7 @@ const text = `Driven Software Developer
           ref={imgRef}
           src="/images/jp.png"
           alt="man"
-          className="w-md rounded-3xl"
+          className="w-md rounded-3xl grayscale transition-[filter] duration-500 hover:grayscale-0"
         />
         <AnimatedTextLines text={aboutText} className={"w-full"} />
       </div>
