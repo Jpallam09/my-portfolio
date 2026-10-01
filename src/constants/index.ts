@@ -68,8 +68,7 @@ export const servicesData: Service[] = [
       "Getting a product live should be simple. I handle environments, hosting, and release pipelines so updates ship without drama.",
     items: [
       { title: "Vercel" },
-      { title: "Hostinger VPS" },
-      { title: "Render" }
+      { title: "Hostinger VPS, Render" }
     ],
   },
 ];

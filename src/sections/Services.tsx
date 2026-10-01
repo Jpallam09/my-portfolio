@@ -9,6 +9,7 @@ const Services = () => {
     with smooth UX to drive growth
     not headaches.`;
   const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const innerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Give every card the height of the tallest one, so each card fully covers
   // the one behind it when stacked.
@@ -23,26 +24,35 @@ const Services = () => {
       els.forEach((el) => (el.style.minHeight = `${tallest}px`));
     };
 
-    const onResize = () => {
+    const remeasure = () => {
       syncHeights();
       ScrollTrigger.refresh();
     };
 
     syncHeights();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+
+    // Measure again after the web fonts and the rest of the page have loaded,
+    // because the text changes size when the real font replaces the fallback.
+    document.fonts?.ready.then(remeasure);
+    window.addEventListener("load", remeasure);
+    window.addEventListener("resize", remeasure);
+    return () => {
+      window.removeEventListener("load", remeasure);
+      window.removeEventListener("resize", remeasure);
+    };
   }, []);
 
   useGSAP(() => {
-    // Every service card slides up on its own as it reaches the screen. Because
-    // each one has its own trigger, they animate separately instead of the whole
-    // list appearing at once.
+    // Every service card's CONTENT slides up on its own as the card reaches the
+    // screen. Only the content moves, never the sticky card itself, so the card
+    // always stays in place and keeps covering the one behind it.
     // start: "top 80%" = begin when the card's top edge is 80% down the screen,
     // so it's already slightly visible before it starts moving.
-    serviceRefs.current.forEach((el) => {
-      if (!el) return;
+    serviceRefs.current.forEach((el, index) => {
+      const inner = innerRefs.current[index];
+      if (!el || !inner) return;
 
-      gsap.from(el, {
+      gsap.from(inner, {
         y: 200,
         scrollTrigger: {
           trigger: el,
@@ -69,43 +79,47 @@ const Services = () => {
             serviceRefs.current[index] = el;
           }}
           key={index}
-          className="sticky px-5 pt-6 pb-10 text-white bg-black border-t-2 sm:px-10 sm:pb-12 border-white/30"
+          className="px-5 pt-6 pb-10 text-white border-t-2 sm:px-10 sm:pb-12 border-white/30"
           style={{
+            position: "sticky",
             top: `calc(10vh + ${index * 5}em)`,
             marginBottom: `${(servicesData.length - index - 1) * 5}rem`,
+            zIndex: index + 1,
+            backgroundColor: "#000",
+            overflow: "hidden",
           }}
         >
-          <div className="flex items-center justify-between gap-4 font-light">
-            <div className="flex flex-col gap-4 sm:gap-6">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl">
-                {service.title}
-              </h2>
-              <p className="text-base leading-relaxed tracking-wide sm:text-xl sm:tracking-widest lg:text-2xl text-white/60 text-pretty">
-                {service.description}
-              </p>
-              <div className="flex flex-col gap-2 text-xl sm:gap-4 sm:text-2xl lg:text-3xl text-white/80">
-                {service.items.map((item, itemIndex) => (
-                  <div key={`item-${index}-${itemIndex}`}>
-                    <h3 className="flex">
-                      <span className="mr-6 text-base sm:mr-12 sm:text-lg text-white/30">
-                        0{itemIndex + 1}
-                      </span>
-                      {item.title}
-                    </h3>
-                    {itemIndex < service.items.length - 1 && (
-                      <div className="w-full h-px my-2 bg-white/30" />
-                    )}
-                  </div>
-                ))}
+          <div ref={(el) => {
+            innerRefs.current[index] = el;
+          }}>
+            <div className="flex items-center justify-between gap-4 font-light">
+              <div className="flex flex-col gap-4 sm:gap-6">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl">
+                  {service.title}
+                </h2>
+                <p className="text-base leading-relaxed tracking-wide sm:text-xl sm:tracking-widest lg:text-2xl text-white/60 text-pretty">
+                  {service.description}
+                </p>
+                <div className="flex flex-col gap-2 text-xl sm:gap-4 sm:text-2xl lg:text-3xl text-white/80">
+                  {service.items.map((item, itemIndex) => (
+                    <div key={`item-${index}-${itemIndex}`}>
+                      <h3 className="flex">
+                        <span className="mr-6 text-base sm:mr-12 sm:text-lg text-white/30">
+                          0{itemIndex + 1}
+                        </span>
+                        {item.title}
+                      </h3>
+                      {itemIndex < service.items.length - 1 && (
+                        <div className="w-full h-px my-2 bg-white/30" />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
       ))}
-
-      {/* Empty space after the last card. The stack stays pinned while this
-          scrolls past, so the last card finishes stacking before About arrives. */}
-      <div aria-hidden className="h-[40vh]" />
     </section>
   );
 };
