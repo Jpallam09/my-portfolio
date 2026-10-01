@@ -4,13 +4,6 @@ import Marquee from "../components/Marquee";
 import { marqueeRepeat, socials } from "../constants";
 import { gsap } from "../lib/gsap";
 
-// Shape of one entry in socials. If your constants file already has
-// a type for this, import it and delete this interface.
-interface Social {
-  name: string;
-  href: string;
-}
-
 // Keep your real details in one place. Only edit these two lines.
 const EMAIL = "allamjohnpaul0901@gmail.com";
 const PHONE = "+63 916 133 3599";
@@ -43,7 +36,6 @@ const Contact = () => {
     WE’D love to hear from you and discus further!`;
   const phone = formatPhone(PHONE);
   const emailOk = isValidEmail(EMAIL);
-  const socialLinks = socials as Social[];
 
   useGSAP(() => {
     // The three contact blocks slide up one after another when they scroll in.
@@ -110,7 +102,7 @@ const Contact = () => {
               <h2>Social Media</h2>
               <div className="w-full h-px my-2 bg-white/30" />
               <div className="flex flex-wrap gap-2">
-                {socialLinks.map((social, index) => (
+                {socials.map((social, index) => (
                   <a
                     key={index}
                     href={social.href}

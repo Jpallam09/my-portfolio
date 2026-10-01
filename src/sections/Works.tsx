@@ -5,20 +5,6 @@ import { useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { gsap } from "../lib/gsap";
 import { useGSAP } from "@gsap/react";
 
-// Shape of one entry in projects. If your constants file already has
-// a type for this, import it and delete these two interfaces.
-interface Framework {
-  id: number | string;
-  name: string;
-}
-
-interface Project {
-  id: number | string;
-  name: string;
-  image: string;
-  frameworks: Framework[];
-}
-
 const Works = () => {
   const overlayRefs = useRef<Array<HTMLDivElement | null>>([]);
   const previewRef = useRef<HTMLDivElement | null>(null);
@@ -28,8 +14,6 @@ const Works = () => {
   const text = `Featured projects that have been meticulously
     crafted with passion to drive
     results and impact.`;
-
-  const works = projects as Project[];
 
   const mouse = useRef({ x: 0, y: 0 });
   const moveX = useRef<gsap.QuickToFunc | null>(null);
@@ -155,7 +139,7 @@ const Works = () => {
         className="relative flex flex-col font-light"
         onMouseMove={handleMouseMove}
       >
-        {works.map((project, index) => (
+        {projects.map((project, index) => (
           <div
             key={project.id}
             className="project-row relative flex flex-col gap-1 py-5 cursor-pointer group md:gap-0"
@@ -207,7 +191,7 @@ const Works = () => {
         >
           {currentIndex !== null && (
             <img
-              src={works[currentIndex]?.image}
+              src={projects[currentIndex]?.image}
               alt="preview"
               className="object-cover w-full h-full"
             />

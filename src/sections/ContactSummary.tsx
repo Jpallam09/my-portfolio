@@ -5,7 +5,7 @@ import { gsap } from "../lib/gsap";
 import { marqueeRepeat, marqueeValues } from "../constants";
 
 const ContactSummary = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement | null>(null);
 
   useGSAP(() => {
     // You can attach a scroll trigger to a tween that doesn't actually change

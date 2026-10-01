@@ -1,5 +1,37 @@
-// index.js
-export const servicesData = [
+// The shape of each entry below is declared here, next to the data, so the
+// arrays are checked against it as they are written. The sections import these
+// types instead of redeclaring their own, which is what makes renaming a field
+// below a compile error rather than a runtime `undefined`.
+export type ServiceItem = {
+  title: string;
+};
+
+export type Service = {
+  title: string;
+  description: string;
+  items: ServiceItem[];
+};
+
+export type Framework = {
+  id: number;
+  name: string;
+};
+
+export type Project = {
+  id: number;
+  name: string;
+  description: string;
+  href: string;
+  image: string;
+  frameworks: Framework[];
+};
+
+export type Social = {
+  name: string;
+  href: string;
+};
+
+export const servicesData: Service[] = [
   {
     title: "Frontend",
     description:
@@ -41,7 +73,7 @@ export const servicesData = [
     ],
   },
 ];
-export const projects = [
+export const projects: Project[] = [
   {
     id: 1,
     name: "SMND Document Management System",
@@ -99,7 +131,7 @@ export const projects = [
     ],
   },
 ];
-export const socials = [
+export const socials: Social[] = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/johnpaulallam/" },
   { name: "GitHub", href: "https://github.com/jpallam09" },
 ];
@@ -109,7 +141,7 @@ export const socials = [
 // animation whenever its items prop changes, and a list written inline in a
 // component (`const items = ["a", "b"]`) is a brand new array each time, which
 // means the animation would restart on every unrelated re-render.
-export const marqueeValues = [
+export const marqueeValues: string[] = [
   "Scalability",
   "Performance",
   "Clean Code",

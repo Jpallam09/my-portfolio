@@ -6,10 +6,10 @@ import { Link } from "react-scroll";
 
 const Navbar = () => {
   const navRef = useRef<HTMLElement | null>(null);
-  const linksRef = useRef<Array<HTMLElement | null>>([]);
-  const contactRef = useRef<HTMLElement | null>(null);
-  const topLineRef = useRef<HTMLElement | null>(null);
-  const bottomLineRef = useRef<HTMLElement | null>(null);
+  const linksRef = useRef<Array<HTMLDivElement | null>>([]);
+  const contactRef = useRef<HTMLDivElement | null>(null);
+  const topLineRef = useRef<HTMLSpanElement | null>(null);
+  const bottomLineRef = useRef<HTMLSpanElement | null>(null);
   const tl = useRef<gsap.core.Timeline | null>(null);
   const iconTl = useRef<gsap.core.Timeline | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -99,11 +99,11 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     if (isOpen) {
-      tl.current.reverse();
-      iconTl.current.reverse();
+      tl.current?.reverse();
+      iconTl.current?.reverse();
     } else {
-      tl.current.play();
-      iconTl.current.play();
+      tl.current?.play();
+      iconTl.current?.play();
     }
     setIsOpen(!isOpen);
   };
@@ -116,7 +116,12 @@ const Navbar = () => {
         <div className="flex flex-col text-5xl gap-y-2 md:text-6xl lg:text-8xl">
           {["home", "services", "about", "work", "contact"].map(
             (section, index) => (
-              <div key={index} ref={(el) => (linksRef.current[index] = el)}>
+              <div
+                key={index}
+                ref={(el) => {
+                  linksRef.current[index] = el;
+                }}
+              >
                 <Link
                   className="transition-all duration-300 cursor-pointer hover:text-white"
                   to={`${section}`}

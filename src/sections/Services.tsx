@@ -2,27 +2,13 @@ import { useEffect, useRef } from "react";
 import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import { servicesData } from "../constants";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "../lib/gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Shape of one entry in servicesData. If your constants file already has
-// a type for this, import it and delete these two interfaces.
-interface ServiceItem {
-  title: string;
-}
-
-interface Service {
-  title: string;
-  description: string;
-  items: ServiceItem[];
-}
+import { gsap, ScrollTrigger } from "../lib/gsap";
 
 const Services = () => {
   const text = `I build secure, high-performance full-stack apps
     with smooth UX to drive growth
     not headaches.`;
   const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const services = servicesData as Service[];
 
   // Give every card the height of the tallest one, so each card fully covers
   // the one behind it when stacked.
@@ -77,7 +63,7 @@ const Services = () => {
         textColor={"text-white"}
         withScrollTrigger={true}
       />
-      {services.map((service, index) => (
+      {servicesData.map((service, index) => (
         <div
           ref={(el) => {
             serviceRefs.current[index] = el;
@@ -86,7 +72,7 @@ const Services = () => {
           className="sticky px-5 pt-6 pb-10 text-white bg-black border-t-2 sm:px-10 sm:pb-12 border-white/30"
           style={{
             top: `calc(10vh + ${index * 5}em)`,
-            marginBottom: `${(services.length - index - 1) * 5}rem`,
+            marginBottom: `${(servicesData.length - index - 1) * 5}rem`,
           }}
         >
           <div className="flex items-center justify-between gap-4 font-light">
