@@ -121,6 +121,8 @@ body {
   scroll-behavior: smooth;
   overflow-x: hidden;
   font-family: var(--font-amiamie);
+  -webkit-user-select: none; /* Safari */
+  user-select: none;         /* Standard syntax */
 }
 
 @utility clip-path {

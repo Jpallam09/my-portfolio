@@ -52,6 +52,6 @@ Single-page GSAP-driven portfolio (React 19 + TS + Vite 6 + Tailwind v4). Git re
 
 ## Known pre-existing issues (leave alone unless asked)
 
-- Contact details are hardcoded literals duplicated across `Navbar.tsx` and `Contact.tsx` (email + phone), **not** in `src/constants` — changing one means changing both. Every `projects[].href` is `""`.
+- Contact details are hardcoded literals duplicated across `Navbar.tsx` and `Contact.tsx` (email + phone), **not** in `src/constants` — changing one means changing both. `Works.tsx` still renders no `<a>` around a row, so `projects[].href` (GitHub repo URLs) is currently unused data.
 - `Works.tsx` hover/preview effects are hard-guarded by `window.innerWidth < 768` checks, independent of Tailwind's `md:` breakpoint, and are invisible on touch devices by design.
 - `ServiceSummary.tsx` spells "Architucture" and `Contact.tsx` spells "discus" — copy bugs, not code bugs.
