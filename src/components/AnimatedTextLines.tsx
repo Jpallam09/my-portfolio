@@ -45,7 +45,9 @@ export const AnimatedTextLines = ({
       {lines.map((line, index) => (
         <span
           key={index}
-          ref={(el) => (lineRefs.current[index] = el)}
+          ref={(el) => {
+            lineRefs.current[index] = el;
+          }}
           className="block leading-relaxed tracking-wide text-pretty"
         >
           {line}
